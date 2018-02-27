@@ -1,8 +1,6 @@
 package com.worldapp.qa;
 
-/**
- * Created by ubuntu on 25.02.18.
- */
+
 public enum ApkSearchingUrl {
 
     APK_SEARCHING_URL("http://apk-dl.com/");
