@@ -15,6 +15,9 @@ public class FileManager {
     private static final int BUFFER_SIZE = 4096;
 
     public static File downloadFile(String fileURL, String saveDir) throws IOException {
+        if (fileURL.isEmpty()) {
+            throw new IllegalArgumentException("Download file url can not be empty");
+        }
         String saveFilePath = "";
         URL url = new URL(fileURL);
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
