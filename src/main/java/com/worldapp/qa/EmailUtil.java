@@ -14,7 +14,7 @@ public class EmailUtil {
 
     public static void sendEmailToInfoSec(){
         Properties properties = new Properties();
-        properties.put("mail.smtp.starttls.enable", "faslse");
+        properties.put("mail.smtp.starttls.enable", "false");
         properties.put("mail.smtp.auth", "false");
         properties.put("mail.smtp.host", "localhost");
         properties.put("mail.smtp.port", "8080");
@@ -24,8 +24,8 @@ public class EmailUtil {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(emailAddressFrom));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailAddressTo));
-            message.setSubject("Application checked");
-            message.setText("This is a test");
+            message.setSubject("Warning!!!!!! Application checker.");
+            message.setText("Builds that present in app store or play market does not equals expected version");
             Transport.send(message);
         } catch (MessagingException e){
             e.printStackTrace();
