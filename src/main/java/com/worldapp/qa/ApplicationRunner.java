@@ -9,22 +9,18 @@ public class ApplicationRunner {
 
     private static final Logger LOG = Logger.getLogger(ApplicationRunner.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
-        try {
-            if (!isValidArguments(args)) {
-                LOG.error("Invalid arguments, example: java - jar cordova androidVersion iosVersion");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!isValidArguments(args)) {
+            throw new IllegalArgumentException("Invalid arguments, example: java - jar cordova androidVersion iosVersion");
         }
 
         String applicationType = "cordova";
         String androidVersion = "8.18.882";
-        String iosVersion = "8.18.882";
+        String iosVersion = "8.23.881";
 
         ApplicationChecker applicationChecker = new ApplicationChecker(androidVersion, iosVersion);
-        boolean isIosVersionCorrect = false;
+        boolean isIosVersionCorrect = true;
         boolean isAndroidVersionCorrect = false;
 
         try {
@@ -40,8 +36,9 @@ public class ApplicationRunner {
             e.printStackTrace();
         }
 
-        if (isAndroidVersionCorrect && isIosVersionCorrect) {
-
+        if (!isAndroidVersionCorrect || !isIosVersionCorrect) {
+            LOG.info("Send email to InfoSec");
+            EmailUtil.sendEmailToInfoSec();
         }
     }
 

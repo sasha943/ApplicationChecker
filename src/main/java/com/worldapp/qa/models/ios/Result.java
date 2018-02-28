@@ -1,4 +1,4 @@
-package com.worldapp.qa;
+package com.worldapp.qa.models.ios;
 
 
 import java.util.List;
