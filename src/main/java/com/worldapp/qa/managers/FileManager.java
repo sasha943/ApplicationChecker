@@ -1,12 +1,13 @@
 package com.worldapp.qa.managers;
 
 import org.apache.log4j.Logger;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import sun.misc.BASE64Encoder;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class FileManager {
 
@@ -25,17 +26,14 @@ public class FileManager {
 
         int responseCode = httpConn.getResponseCode();
 
-        // always check HTTP response code first
         LOG.info("Check response status code from download server");
         if (responseCode == HttpURLConnection.HTTP_OK) {
             String disposition = httpConn.getHeaderField("Content-Disposition");
             String fileName = getFileName(fileURL, disposition);
 
-            // opens input stream from the HTTP connection
             InputStream inputStream = httpConn.getInputStream();
             saveFilePath = saveDir + File.separator + fileName;
 
-            // opens an output stream to save into file
             FileOutputStream outputStream = new FileOutputStream(saveFilePath);
 
             int bytesRead;
@@ -64,6 +62,19 @@ public class FileManager {
         customDir.mkdir();
         LOG.info("Directory by path " + name + " created");
         return customDir.getAbsolutePath();
+    }
+
+
+    public static String getSHA256FileHash(File file) throws NoSuchAlgorithmException, IOException {
+        byte[] buffer= new byte[8192];
+        int count;
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file.getAbsolutePath()));
+        while ((count = bis.read(buffer)) > 0) {
+            digest.update(buffer, 0, count);
+        }
+        byte[] hash = digest.digest();
+        return new BASE64Encoder().encode(hash);
     }
 
     private static String getFileName(String fileURL, String disposition) {

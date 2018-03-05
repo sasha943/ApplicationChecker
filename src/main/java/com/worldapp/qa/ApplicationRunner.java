@@ -1,43 +1,52 @@
 package com.worldapp.qa;
 
 
+import org.apache.log4j.Logger;
 import java.io.IOException;
 
 public class ApplicationRunner {
 
+    private static Logger LOG = Logger.getLogger(ApplicationRunner.class);
+
     public static void main(String[] args) throws Exception {
 
-        if (!isValidArguments(args)) {
-            throw new IllegalArgumentException("Invalid arguments, example: java -jar jarName cordova androidVersion iosVersion");
-        }
+        /*if (!isValidArguments(args)) {
+            throw new IllegalArgumentException("Invalid arguments, example:
+            java -jar jarName appType{cordova/native} platform{android/ios} formcomExpectedValue keysurveyExpectedValue");
+        }*/
 
-        String applicationType = args[0];
-        String androidVersion = args[1];
-        String iosVersion = args[2];
+        String androidVersion = "8.18.882";//args[1];
+        String iosVersion = "818882";//args[2];
 
-        ApplicationChecker applicationChecker = new ApplicationChecker(androidVersion, iosVersion);
-        boolean isIosVersionCorrect = false;
-        boolean isAndroidVersionCorrect = false;
+        String applicationType = "cordova";//args[0];
+        String platform = args[1];
+
+        ApplicationChecker applicationChecker = new ApplicationChecker();
 
         try {
             if (applicationType.equals("cordova")) {
-                isAndroidVersionCorrect = applicationChecker.checkAndroidApp();
-                isIosVersionCorrect = applicationChecker.checkIosApp();
-            }
-            if (applicationType.equals("native")) {
-                isAndroidVersionCorrect = applicationChecker.checkNativeAndroidApp();
-                isIosVersionCorrect = applicationChecker.checkNativeIosApp();
+                LOG.info("Check cordova application");
+
+                if (platform.equals("android")) {
+                    LOG.info("Check Android application");
+                    String actualFormComHash = applicationChecker.getFormComHash();
+                    String actualKeySurveyHash = applicationChecker.getKeySurveyHash();
+                }
+
+                if (platform.equals("ios")) {
+                    LOG.info("Check IOS application");
+                    String actualIosFormComReleaseDate = applicationChecker.getIosFormComReleaseDate();
+                    String actualIosKeySurveyReleaseDate = applicationChecker.getIosKeySurveyReleaseDate();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if (!isAndroidVersionCorrect || !isIosVersionCorrect) {
-            EmailUtil.sendEmailToInfoSec();
-        }
+        EmailUtil.sendEmailToInfoSec();
     }
 
     private static boolean isValidArguments(String[] args) {
-        return args.length == 3 && (args[0].equals("cordova") || args[0].equals("native"));
+        return args.length == 4 && (args[0].equals("cordova") || args[1].equals("ios") || args[1].equals("android"));
     }
 }

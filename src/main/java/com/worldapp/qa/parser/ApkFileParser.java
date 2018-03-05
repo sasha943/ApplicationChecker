@@ -38,15 +38,4 @@ public class ApkFileParser {
         return apkFile.getApkSingers();
     }
 
-    public String getSHA256Hash(File file) throws NoSuchAlgorithmException, IOException {
-        byte[] buffer= new byte[8192];
-        int count;
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file.getAbsolutePath()));
-        while ((count = bis.read(buffer)) > 0) {
-            digest.update(buffer, 0, count);
-        }
-        byte[] hash = digest.digest();
-        return new BASE64Encoder().encode(hash);
-    }
 }
