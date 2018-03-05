@@ -19,7 +19,7 @@ public class ApplicationRunner {
         String iosVersion = "818882";//args[2];
 
         String applicationType = "cordova";//args[0];
-        String platform = args[1];
+        String platform = "android";
 
         ApplicationChecker applicationChecker = new ApplicationChecker();
 
@@ -28,15 +28,17 @@ public class ApplicationRunner {
                 LOG.info("Check cordova application");
 
                 if (platform.equals("android")) {
-                    LOG.info("Check Android application");
+                    LOG.info("---------------------Check Android application---------------------");
                     String actualFormComHash = applicationChecker.getFormComHash();
                     String actualKeySurveyHash = applicationChecker.getKeySurveyHash();
+                    LOG.info("Form.com: " + actualFormComHash + " KeySurvey: " + actualKeySurveyHash);
                 }
 
                 if (platform.equals("ios")) {
-                    LOG.info("Check IOS application");
+                    LOG.info("---------------------Check IOS application---------------------");
                     String actualIosFormComReleaseDate = applicationChecker.getIosFormComReleaseDate();
                     String actualIosKeySurveyReleaseDate = applicationChecker.getIosKeySurveyReleaseDate();
+                    LOG.info("Form.com: " + actualIosFormComReleaseDate + " KeySurvey: " + actualIosKeySurveyReleaseDate);
                 }
             }
         } catch (IOException e) {

@@ -20,13 +20,13 @@ public class ApplicationChecker {
     * */
 
     public String getFormComHash() throws IOException, NoSuchAlgorithmException {
-        File filePath = downloadAndSaveFile(ApplicationBundle.FORM_CORDOVA.getBundleName(), "apk");
-        return FileManager.getSHA256FileHash(filePath);
+        File file = downloadAndSaveFile(ApplicationBundle.FORM_CORDOVA.getBundleName());
+        return FileManager.getSHA256FileHash(file);
     }
 
     public String getKeySurveyHash() throws IOException, NoSuchAlgorithmException {
-        File filePath = downloadAndSaveFile(ApplicationBundle.KEYSURBEY_CORDOVA.getBundleName(), "apk");
-        return FileManager.getSHA256FileHash(filePath);
+        File file = downloadAndSaveFile(ApplicationBundle.KEYSURBEY_CORDOVA.getBundleName());
+        return FileManager.getSHA256FileHash(file);
     }
 
     /**
@@ -36,20 +36,20 @@ public class ApplicationChecker {
     public String getIosKeySurveyReleaseDate() throws IOException {
         LOG.info("Check iOS cordova KeySurvey app");
         String iosKeySurveyDate = downloadAndGetIosReleaseDate(ApplicationBundle.KEYSURBEY_CORDOVA.getBundleName());
-        LOG.info("iOS cordova KeySurvey app actual version is: " + iosKeySurveyDate);
+        LOG.info("iOS cordova KeySurvey app actual releaseDate is: " + iosKeySurveyDate);
         return iosKeySurveyDate;
     }
 
     public String getIosFormComReleaseDate() throws IOException {
         LOG.info("Check iOS cordova KeySurvey app");
         String iosFormComDate = downloadAndGetIosReleaseDate(ApplicationBundle.FORM_CORDOVA.getBundleName());
-        LOG.info("iOS cordova KeySurvey app actual version is: " + iosFormComDate);
+        LOG.info("iOS cordova Form.com app actual releaseDate is: " + iosFormComDate);
         return iosFormComDate;
     }
 
-    private File downloadAndSaveFile(String bundleId, String dir) throws IOException {
+    private File downloadAndSaveFile(String bundleId) throws IOException {
         String apkDownloadingUrl = ApkDownloadingUrl.getApkDownloadingUrl(bundleId);
-        return FileManager.downloadFile(apkDownloadingUrl, dir);
+        return FileManager.downloadFile(apkDownloadingUrl, FileManager.createDownloadFolder("apk"));
     }
 
     private String downloadAndGetIosReleaseDate(String bundleId) throws IOException {
